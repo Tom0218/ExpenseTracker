@@ -10,6 +10,7 @@ export default {
       arr:[],
       IncomeArr:[],
       expenseArr:[],
+      contentBox:[],
       
     }
   },
@@ -19,8 +20,6 @@ methods: {
 
   addNItem(dog1data){
     console.log(dog1data);
-    this.arr .push( dog1data);
-    console.log(this.arr);
     // 若大於零加入收益陣列
     if (dog1data.Amount > 0){
       this.IncomeArr.push(dog1data)
@@ -30,7 +29,15 @@ methods: {
     if (dog1data.Amount < 0){
       this.expenseArr.push(dog1data)
       this.neNum += dog1data.Amount
+
       }
+      console.log(this.IncomeArr)
+      console.log(this.expenseArr)
+    },
+    Dele(){
+      console.log("555")
+      
+
     }
   },
 
@@ -75,11 +82,25 @@ methods: {
         <button type="button" class="numBtn" v-on:click="cool" id="Addtransaction">Add transaction</button>
       </div>
       <div class="content">
-        <div class="block" v-for="item in arr">
-          <span class="itemName">{{ item.Text}}</span>
+        <div class="blockIncome" v-for="item in IncomeArr">
+          <span class="itemName" >{{ item.Text}}</span>
           <span class="moneyText">{{ item.Amount}}</span>
-          <button type="button" class="delBtn">Delete</button>
+          <button type="button" class="delBtn" @click="Dele">Delete</button>
         </div>
+        <div class="blockExpense" v-for="item in expenseArr">
+          <span class="itemName" >{{ item.Text}}</span>
+          <span class="moneyText">{{ item.Amount}}</span>
+          <button type="button" class="delBtn" @click="Dele">Delete</button>
+        </div>
+
+
+
+
+        <!-- <div class="block" v-for="item in arr" value="true" v-bind:class="changeColor">
+          <span class="itemName" v-bind:class = "styleArr">{{ item.Text}}</span>
+          <span class="moneyText">{{ item.Amount}}</span>
+          <button type="button" class="delBtn" @click="Dele">Delete</button>
+        </div> -->
       </div>
     </div>
   </div>
@@ -136,7 +157,7 @@ methods: {
       width:60% ;
       height: 40vh;
       
-      .block{
+      .blockIncome{
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -148,6 +169,7 @@ methods: {
         .moneyText{
           position: absolute;
           right: 18%;
+          color: green;
         }
         .delBtn{
           width: 15%;
@@ -160,6 +182,36 @@ methods: {
         }
         .itemName{
           margin-left: 10px;
+          color: green;
+        }
+        
+      }
+      .blockExpense{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 24pt;
+        border: 3px #4b85a0 solid;
+        border-radius: 10px;
+        margin: 2% 0 ;
+        position: relative;
+        .moneyText{
+          position: absolute;
+          right: 18%;
+          color:red;
+        }
+        .delBtn{
+          width: 15%;
+          height:25px;
+          margin-right: 5px ;
+          border: none;
+          border-radius: 5px;
+          background-color: #4b85a0;
+          color: white;
+        }
+        .itemName{
+          margin-left: 10px;
+          color:red;
         }
         
       }
