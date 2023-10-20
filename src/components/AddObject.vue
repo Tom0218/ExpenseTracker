@@ -2,39 +2,38 @@
 export default{
     data(){
         return{
-            newinfo:{
+            newItem:{
                 Text:"",
                 Amount:"",
+                
             }
             
         }
     },
     methods:{
-        Toindex(){
-            this.$emit('New',this.newinfo);
-        }
+        addItem(){
+            this.$emit('dog1',this.newItem);
+            this.newItem={};
+            }
+
+        },
     }
-}
+
 
 </script>
 
 <template>
-    <div class="popup">
-    <div class="popup-content">
         <div class="showArea">
             <div class="inputArea">
                 <p>Text</p>
-                <input type="text" v-model="this.NewObj.Text">
+                <input type="text" v-model="this.newItem.Text">
                 <p>Amount</p>
-                <input type="text" v-model="this.NewObj.Amount">
+                <input type="number" v-model="this.newItem.Amount">
                 <div class="btn">
-                <button type="button" @click="Toindex">Add transaction</button>
+                <button type="button" @click= "addItem" >Add transaction</button>
                 </div>    
             </div>
         </div>
-        <slot></slot>
-    </div>
-    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -67,6 +66,7 @@ export default{
         display: flex;
         justify-content: center;
         border-radius: 20px;
+        border: 1px black solid;
         .inputArea{
             height: 200px;
             width: 300px;

@@ -1,52 +1,49 @@
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AddObject from "./components/AddObject.vue"
 export default {
   data() {
     return {
-      plusNum: 0,
+      plusNum:0,
       neNum: 0,
       totalNum: 0,
-      arr: [],
+      dataBox:"",
+      arr:[],
+      IncomeArr:[],
+      expenseArr:[],
+      
     }
   },
 
 
 methods: {
 
-
-
-cool(){
-  const Userinput = document.getElementById("Add transaction");
-  //let Addtransaction = parseInt(Userinput.value);
-
-  if (Addtransaction > 0) {
-    let obj = {
-      name :"good",
-      money : 50,
-  }
-        this.arr.push(obj);
-      }else {
-        let obj2 = {
-          name :"bad",
-          money : -10,
-          
-          }
-          this.arr.push(obj2);
-        }
-
-      
-      
-      
+  addNItem(dog1data){
+    console.log(dog1data);
+    this.arr .push( dog1data);
+    console.log(this.arr);
+    // 若大於零加入收益陣列
+    if (dog1data.Amount > 0){
+      this.IncomeArr.push(dog1data)
+      this.plusNum = this.plusNum + dog1data.Amount
+    }
+    //若小於零加入支出陣列
+    if (dog1data.Amount < 0){
+      this.expenseArr.push(dog1data)
+      this.neNum += dog1data.Amount
+      }
     }
   },
+
+
   components: {
-    HelloWorld
+    AddObject,
   }
 }
 </script>
 
 <template>
   <div class="bgArea">
+
     <div class="blueArea">
         <div class="mainArea">
           <h3 class="ExpenseTracker">Expense Tracker</h3>
@@ -55,27 +52,23 @@ cool(){
           <h1 class="moneyyy">${{ totalNum }}</h1>
         </div>
     </div>
+
+
     <div class="whiteArea">
       <div class="top">
 
-
-
-
-
+        <!-- 收益顯示 -->
         <div class="Income">
           <h2>INCOME</h2>
+          <div>
+          </div>
           <h1>{{ plusNum }}</h1>
         </div>
-
-
+        <!-- 支出顯示 -->
         <div class="Expense">
           <h2>EXPENSE</h2>
           <h1>{{ neNum }}</h1>
         </div>
-
-
-
-
 
       </div>
       <div class="btn">
@@ -83,13 +76,14 @@ cool(){
       </div>
       <div class="content">
         <div class="block" v-for="item in arr">
-          <span class="itemName">{{ item.name }}</span>
-          <span class="moneyText">${{ item.money }}</span>
+          <span class="itemName">{{ item.Text}}</span>
+          <span class="moneyText">{{ item.Amount}}</span>
           <button type="button" class="delBtn">Delete</button>
         </div>
       </div>
     </div>
   </div>
+  <div><AddObject @dog1 = "addNItem"/></div>
 
 </template>
 
