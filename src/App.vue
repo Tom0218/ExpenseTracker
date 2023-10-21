@@ -16,15 +16,16 @@ export default {
 
   methods: {
     NewItem(newinfo){
+    
       this.arr = newinfo//把newinfo變數裡的資料綁定arr陣列
       this.addItem.push(this.arr)//把arr陣列push進additem陣列以便arr陣列清空並匯入新物件
-      for(let i=0;i < (this.addItem).length ; i++){
-        if(this.addItem[i].Amount > 0){
-          this.plusNum+=this.addItem[i].Amount;
-        }else{
-          this.neNum +=this.addItem[i].Amount;
+
+      if(this.arr.Amount > 0){//判斷收入or 支出
+        this.plusNum+=this.arr.Amount;
+      }else{
+        this.neNum +=this.arr.Amount;
         }
-      }
+      this.totalNum = this.plusNum +  this.neNum;
     },
     DeleteItem(){
 
@@ -52,12 +53,12 @@ export default {
 
         <div class="Income">
           <h2>INCOME</h2>
-          <h1>{{ plusNum }}</h1>
+          <h1>{{ this.plusNum }}</h1>
         </div>
 
         <div class="Expense">
           <h2>EXPENSE</h2>
-          <h1>{{ neNum }}</h1>
+          <h1>{{ this.neNum }}</h1>
         </div>
 
       </div>
@@ -66,8 +67,8 @@ export default {
       </div>
       <div class="content">
         <div class="block" v-for="item in addItem">
-          <span class="itemName">{{ item.Text }}</span>
-          <span class="moneyText">{{ item.Amount}}</span>
+          <span class="itemName">{{ item.Text }} </span>
+          <span class="moneyText">{{ item.Amount}} $</span>
           <button type="button" class="delBtn" @click="DeleteItem">Delete</button>
         </div>
       </div>
@@ -138,10 +139,10 @@ export default {
         position: relative;
         .moneyText{
           position: absolute;
-          right: 18%;
+          right: 20%;
         }
         .delBtn{
-          width: 15%;
+        
           height:25px;
           margin-right: 5px ;
           border: none;
