@@ -5,13 +5,15 @@ export default{
             newinfo:{
                 Text:"",
                 Amount:"",
+                
             }
             
         }
     },
     methods:{
-        Toindex(){
-            this.$emit('New',this.newinfo);
+        Gofather(){
+            this.$emit('getAddObj',this.newinfo);
+            this.newinfo={}
         }
     }
 }
@@ -19,22 +21,17 @@ export default{
 </script>
 
 <template>
-    <div class="popup">
-    <div class="popup-content">
         <div class="showArea">
             <div class="inputArea">
                 <p>Text</p>
-                <input type="text" v-model="this.NewObj.Text">
+                <input type="text" v-model="this.newinfo.Text">
                 <p>Amount</p>
-                <input type="text" v-model="this.NewObj.Amount">
+                <input type="number" v-model="this.newinfo.Amount">
                 <div class="btn">
-                <button type="button" @click="Toindex">Add transaction</button>
+                <button type="button" @click="Gofather">Add transaction</button>
                 </div>    
             </div>
         </div>
-        <slot></slot>
-    </div>
-    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -64,6 +61,7 @@ export default{
     .showArea{
         height: 300px;
         width: 500px;
+        border: 1px black solid;
         display: flex;
         justify-content: center;
         border-radius: 20px;

@@ -1,5 +1,5 @@
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AddObject from "./components/AddObject.vue"
 export default {
   data() {
     return {
@@ -7,41 +7,23 @@ export default {
       neNum: 0,
       totalNum: 0,
       arr: [],
+      addItem:[],
+    }
+  },
+  components:{
+    AddObject
+  },
+
+  methods: {
+    NewItem(newinfo){
+      this.arr = newinfo//把newinfo變數裡的資料綁定arr陣列
+      this.addItem.push(this.arr)//把arr陣列push進additem陣列以便arr陣列清空並匯入新物件
     }
   },
 
 
-methods: {
 
 
-
-cool(){
-  const Userinput = document.getElementById("Add transaction");
-  //let Addtransaction = parseInt(Userinput.value);
-
-  if (Addtransaction > 0) {
-    let obj = {
-      name :"good",
-      money : 50,
-  }
-        this.arr.push(obj);
-      }else {
-        let obj2 = {
-          name :"bad",
-          money : -10,
-          
-          }
-          this.arr.push(obj2);
-        }
-
-      
-      
-      
-    }
-  },
-  components: {
-    HelloWorld
-  }
 }
 </script>
 
@@ -58,38 +40,31 @@ cool(){
     <div class="whiteArea">
       <div class="top">
 
-
-
-
-
         <div class="Income">
           <h2>INCOME</h2>
           <h1>{{ plusNum }}</h1>
         </div>
-
 
         <div class="Expense">
           <h2>EXPENSE</h2>
           <h1>{{ neNum }}</h1>
         </div>
 
-
-
-
-
       </div>
       <div class="btn">
         <button type="button" class="numBtn" v-on:click="cool" id="Addtransaction">Add transaction</button>
       </div>
       <div class="content">
-        <div class="block" v-for="item in arr">
-          <span class="itemName">{{ item.name }}</span>
-          <span class="moneyText">${{ item.money }}</span>
+        <div class="block" v-for="item in addItem">
+          <span class="itemName">{{ item.Text }}</span>
+          <span class="moneyText">{{ item.Amount}}</span>
           <button type="button" class="delBtn">Delete</button>
         </div>
       </div>
+      
     </div>
   </div>
+  <AddObject @getAddObj="NewItem"/>
 
 </template>
 
@@ -202,3 +177,5 @@ cool(){
 
 }
 </style>
+<!-- git config --global user.email "you@example.com"
+  git config --global user.name "Your Name" -->
