@@ -18,6 +18,16 @@ export default {
     NewItem(newinfo){
       this.arr = newinfo//把newinfo變數裡的資料綁定arr陣列
       this.addItem.push(this.arr)//把arr陣列push進additem陣列以便arr陣列清空並匯入新物件
+      for(let i=0;i < (this.addItem).length ; i++){
+        if(this.addItem[i].Amount > 0){
+          this.plusNum+=this.addItem[i].Amount;
+        }else{
+          this.neNum +=this.addItem[i].Amount;
+        }
+      }
+    },
+    DeleteItem(){
+
     }
   },
 
@@ -58,7 +68,7 @@ export default {
         <div class="block" v-for="item in addItem">
           <span class="itemName">{{ item.Text }}</span>
           <span class="moneyText">{{ item.Amount}}</span>
-          <button type="button" class="delBtn">Delete</button>
+          <button type="button" class="delBtn" @click="DeleteItem">Delete</button>
         </div>
       </div>
       
