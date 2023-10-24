@@ -1,51 +1,70 @@
 <script>
 import AddObject from "./components/AddObject.vue"
+import DeleteBox from "./components/DeleteBox.vue"
 export default {
   data() {
     return {
       plusNum:0,
-      neNum: 0,
-      totalNum: 0,
-      dataBox:"",
+      neNum:0,
+      netIncome:0,
       arr:[],
-      IncomeArr:[],
-      expenseArr:[],
-      contentBox:[],
-      
+      page:0,
+      key : 0,
+      aa : 0,
     }
   },
 
 
-methods: {
+  methods: {
+    addNItem(info){//計算總合
+    this.arr.push(info) //推進主陣列
 
-  addNItem(dog1data){
-    console.log(dog1data);
-    // 若大於零加入收益陣列
-    if (dog1data.Amount > 0){
-      this.IncomeArr.push(dog1data)
-      this.plusNum = this.plusNum + dog1data.Amount
+    if(info.Amount > 0){ 
+      this.plusNum = this.plusNum + info.Amount;
+    }else{
+      this.neNum = this.neNum +info.Amount;
     }
-    //若小於零加入支出陣列
-    if (dog1data.Amount < 0){
-      this.expenseArr.push(dog1data)
-      this.neNum += dog1data.Amount
+    this.netIncome = this.plusNum + this.neNum;
+  },
 
-      }
-      console.log(this.IncomeArr)
-      console.log(this.expenseArr)
+
+  changePageDelete(index){ //跳出確認刪除視窗
+      this.key = index;
+      this.page = 2
     },
-    Dele(){
-      console.log("555")
-      
 
-    }
+  moneyDele(dele){
+      //若被刪除的money > 0 plusNum -money
+      if (dele >=0) { 
+        this.plusNum = this.plusNum - dele
+      }
+      else{
+        //將支出進行絕對值轉為正數
+        this.aa = Math.abs(dele)
+        this.neNum = this.neNum + this.aa //把要刪除的數加回去
+      }
+      this.netIncome = this.neNum + this.plusNum;
+    },
+  deletedArrfn(arr){ //刪除元素後的陣列取代主陣列
+      this.arr = arr
+    },
+  closePage(x){   //刪除元素後帶出的關閉視窗值
+      this.page = x
+    },
+  Addtransaction(){
+      this.page = 1 //新增物件
+    },
+  AddObj(){
+    this.page = 0
+  }
   },
-
-
   components: {
     AddObject,
-  }
+    DeleteBox,
+  },
+  
 }
+
 </script>
 
 <template>
@@ -56,14 +75,13 @@ methods: {
           <h3 class="ExpenseTracker">Expense Tracker</h3>
           <h3 class="Kouhei">Kouhei</h3>
           <p class="Yourbalance">YOUR BALANCE</p>
-          <h1 class="moneyyy">${{ totalNum }}</h1>
+          <h1 class="moneyyy">${{ netIncome}}</h1>
         </div>
     </div>
 
 
     <div class="whiteArea">
       <div class="top">
-
         <!-- 收益顯示 -->
         <div class="Income">
           <h2>INCOME</h2>
@@ -77,38 +95,67 @@ methods: {
           <h1>{{ neNum }}</h1>
         </div>
 
-      </div>
+      </div>  
       <div class="btn">
-        <button type="button" class="numBtn" v-on:click="cool" id="Addtransaction">Add transaction</button>
+        <button type="button" class="numBtn"   @click="Addtransaction()">Add transaction</button>
       </div>
+      <!-- 陣列顯示 -->
       <div class="content">
-        <div class="blockIncome" v-for="item in IncomeArr">
-          <span class="itemName" >{{ item.Text}}</span>
-          <span class="moneyText">{{ item.Amount}}</span>
-          <button type="button" class="delBtn" @click="Dele">Delete</button>
+        <div class="blockIncome" v-for="item, index in arr ">  
+        <span>{{ item.Name }}</span>
+        <span class="moneyText">{{ item.Amount }}</span>
+        <!-- 跳出刪除視窗並綁定key變數=Index -->
+        <button type="button" class="delBtn"
+        :key="index" @click="changePageDelete(index)" >Delete</button>
         </div>
-        <div class="blockExpense" v-for="item in expenseArr">
-          <span class="itemName" >{{ item.Text}}</span>
-          <span class="moneyText">{{ item.Amount}}</span>
-          <button type="button" class="delBtn" @click="Dele">Delete</button>
-        </div>
-
-
-
-
-        <!-- <div class="block" v-for="item in arr" value="true" v-bind:class="changeColor">
-          <span class="itemName" v-bind:class = "styleArr">{{ item.Text}}</span>
-          <span class="moneyText">{{ item.Amount}}</span>
-          <button type="button" class="delBtn" @click="Dele">Delete</button>
-        </div> -->
       </div>
     </div>
   </div>
-  <div><AddObject @dog1 = "addNItem"/></div>
 
+  <!-- 新增物件 -->
+  <div class="popup"  v-if ="page ==1">
+    <div class="popup-content">
+      <!-- <h2>{{ title }}</h2> -->
+      <div class="popup-body">
+        <!-- 弹出窗口的内容放在这里 -->
+        <div class="dlepage">
+    <i class="fa-solid fa-xmark closeWindows" @click="AddObj()"></i>
+    <AddObject @dog1 = "addNItem" @delpage = "closePage"/>
+  </div>
+        <slot></slot>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 刪除物件 -->
+  <div class="popup"  v-if="page ==2">
+    <div class="popup-content">
+      <!-- <h2>{{ title }}</h2> -->
+      <div class="popup-body">
+        <!-- 弹出窗口的内容放在这里 -->
+        <!-- <div v-if="page ==2" class="dlepage"> -->
+    <i class="fa-solid fa-xmark Closewindow" @click="changePage1()"></i>
+    <DeleteBox :DelIndex ="this.key" :delarr="this.arr" 
+
+      @delemoney = "moneyDele" @deletedArr = "deletedArrfn" @closepage = "closePage"/>
+  <!-- </div> -->
+        <slot></slot>
+      </div>
+    </div>
+  </div>
+
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </template>
 
 <style lang="scss" scoped>
+.Closewindow{
+  margin-left: 190px;
+}
 .bgArea {
   width: 100%;
   height: 100vh;
@@ -169,7 +216,6 @@ methods: {
         .moneyText{
           position: absolute;
           right: 18%;
-          color: green;
         }
         .delBtn{
           width: 15%;
@@ -216,16 +262,16 @@ methods: {
         
       }
     }
-
     .top{
       width: 60%;
       margin: 0 20%;
       display: flex;
       justify-content: space-between;
       .Income{
-        color: rgb(72, 165, 72);
+        color: green;
         h1{
           text-align: center;
+          color: green;
         }
       }
       .Expense{
@@ -243,8 +289,53 @@ methods: {
       border: none;
       border-radius: 5px;
     }
+    .dlepage{
+      width: auto;
+    }
 
   }
 
 }
+/* 样式可以根据需要进行自定义 */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #fff;
+  // padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.popup h2 {
+  font-size: 1.5rem;
+}
+
+.popup button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #007BFF;
+  font-size: 1rem;
+  margin-left: auto;
+}
+.popup-body{
+  position: relative;
+  .closeWindows{
+    font-size: 26pt;
+    position: absolute;
+    right: 0;
+    color: #4b85a0;
+  }
+}
+
 </style>

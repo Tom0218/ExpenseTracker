@@ -3,7 +3,7 @@ export default{
     data(){
         return{
             newItem:{
-                Text:"",
+                Name:"",
                 Amount:"",
                 
             }
@@ -12,21 +12,21 @@ export default{
     },
     methods:{
         addItem(){
-            this.$emit('dog1',this.newItem);
-            this.newItem={};
-            }
-
+                this.$emit('dog1',this.newItem);
+                
+                let x = 0
+                this.$emit("delpage",x)//點及新增後就關閉視窗
         },
     }
-
+}
 
 </script>
 
 <template>
         <div class="showArea">
             <div class="inputArea">
-                <p>Text</p>
-                <input type="text" v-model="this.newItem.Text">
+                <p>Name</p>
+                <input type="text" v-model="this.newItem.Name">
                 <p>Amount</p>
                 <input type="number" v-model="this.newItem.Amount">
                 <div class="btn">
@@ -65,8 +65,7 @@ export default{
         width: 500px;
         display: flex;
         justify-content: center;
-        border-radius: 20px;
-        border: 1px black solid;
+
         .inputArea{
             height: 200px;
             width: 300px;
