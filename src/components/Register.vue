@@ -24,15 +24,16 @@ export default{
             localStorage.setItem("user", JSON.stringify(existingUserData));
 
 
-            // if(JSON.parse(localStorage.getItem("user")) == null){//若為第一次使用localstorage
-            //     localStorage.setItem("user",JSON.stringify(userData));
-            //     showText = "註冊成功";
-
+            if(JSON.parse(localStorage.getItem("user")) == null){//若為第一次使用localstorage
+                localStorage.setItem("user",JSON.stringify(userData));
+                showText = "註冊成功";
+            }
             // for(let i = 0;i<)
             // this.outputArr = JSON.parse(localStorage.getItem("user"));
             //     // console.log(this.outputArr[0].account)
             //     for(let i = 0;i<)
-            },
+        },
+
         LogIn(){
             let x = 0
             this.$emit('changepage',x)
