@@ -68,6 +68,7 @@ export default {
 </script>
 
 <template>
+  aa
   <div class="bgArea">
 
     <div class="blueArea">
